@@ -32,14 +32,24 @@ public class Fragment1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        //always set the third param as false
         View rootView =inflater.inflate(R.layout.gallery_fragment,container,false);
 
         RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_view);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+
+        //need to declare as LinearLayoutManager as to use getOrientation method below
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(mLayoutManager);
+
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        //pass the adapter or data in onCreate
         recyclerView.setAdapter(new ComplexRecyclerViewAdapter(items));
 
+        //divider, since Oct 16, google implement DividerItemDecoration.java in recyclerview support library 25
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
+                mLayoutManager.getOrientation()));
+        
         return rootView;
 
     }
