@@ -1,10 +1,13 @@
 package com.example.amieruljapri.myapplication27;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,16 +16,20 @@ import java.util.List;
 
 public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Object> items;
+    private List<ArrayList<String>> items;
+    private Context context= null;
 
-    public ComplexRecyclerViewAdapter(List<Object> items) {
+    public ComplexRecyclerViewAdapter(List<ArrayList<String>> items) {
         this.items = items;
+        //get data from oncreate fragment1
+        //eg: tickettype, category, location, etc
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder viewHolder;
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
 
         switch(viewType){
             case 0:
@@ -45,6 +52,8 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
+        //the logic of getview need to rethink
+
         switch(holder.getItemViewType()){
             case 0:
                 ViewHolder1 vh1 = (ViewHolder1) holder;
@@ -60,18 +69,33 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     private void configureViewHolder2(ViewHolder2 vh2, int position) {
-        TicketCategory ticketCategory = (TicketCategory) items.get(position);
-        if(ticketCategory != null){
-            vh2.getLabel3().setText(ticketCategory.category);
-            vh2.getLabel4().setText(ticketCategory.categoryRespond);
-        }
+        //new view define here
+        //for email, title
+
     }
 
     private void configureViewHolder1(ViewHolder1 vh1, int position) {
-        TicketType ticketType = (TicketType) items.get(position);
-        if(ticketType != null){
-            vh1.getLabel1().setText(ticketType.type);
-            vh1.getLabel2().setText(ticketType.typeRespond);
+
+        //receive list of ticket type here
+        //check the size of list
+
+        ArrayList<String> list = items.get(position);
+
+        if(!list.isEmpty()){
+            //title
+            vh1.getLabel1().setText(list.get(0));
+
+            /**
+             * CAREFULL!!!
+             * repeated use can crash view
+             */
+            //remove title
+            list.remove(0);
+            //this is spinner
+            ArrayAdapter spinnerAdapter = new ArrayAdapter(context,android.R.layout.simple_spinner_item,list);
+            vh1.getSpinner().setAdapter(spinnerAdapter);
+
+
         }
     }
 
@@ -82,12 +106,25 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public int getItemViewType(int position) {
-        if (items.get(position) instanceof TicketType){
-            return 0;
-        } else if (items.get(position) instanceof TicketCategory){
-            return 1;
+
+        String title = items.get(position).get(0);
+
+        //multiple return is a bad practice
+        int viewType = 0;
+
+        switch (title){
+            case ApiClient.TICKET_TYPE:
+            case ApiClient.TICKET_CATEGORY:
+            case ApiClient.TICKET_LOCATION:
+            case ApiClient.TICKET_URGENCY:
+            case ApiClient.TICKET_HARDWARE:
+                viewType = 0;
+                break;
+            case ApiClient.BASE_URL:
+                viewType = 1;
+                break;
         }
 
-        return -1;
+        return viewType;
     }
 }

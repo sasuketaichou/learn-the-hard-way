@@ -37,11 +37,13 @@ public class MainActivity extends FragmentActivity {
             }
         }
 
-        Fragment1 fragment1 = new Fragment1();
-        fragment1.setArguments(getIntent().getExtras());
+        //this start 1st
+        //and then recreate again for bottombar
+        Fragment2 fragment2 = new Fragment2();
+        fragment2.setArguments(getIntent().getExtras());
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.contentContainer, fragment1).commit();
+                .add(R.id.contentContainer, fragment2).commit();
         
         initLay();
     }
@@ -95,7 +97,7 @@ public class MainActivity extends FragmentActivity {
                         break;
 
                     case R.id.tab_gallery:
-                        fragment = new Fragment1();
+                        fragment = new Fragment2();
                         break;
                 }
 

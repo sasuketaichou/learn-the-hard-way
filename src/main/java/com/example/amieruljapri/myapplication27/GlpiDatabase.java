@@ -1,0 +1,77 @@
+package com.example.amieruljapri.myapplication27;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.util.ArrayList;
+
+/**
+ * Created by amierul.japri on 12/19/2016.
+ */
+
+public class GlpiDatabase extends SQLiteOpenHelper {
+
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "Glpi.db";
+    public static final String TABLE_NAME = "GlpiCreateTicket";
+    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_TYPE = "Type";
+    public static final String COLUMN_ITEM = "Item";
+    public static final String COLUMN_ITEM_ID = "ID";
+
+    //debug
+    public String TAG = "retrofit";
+
+    public GlpiDatabase(Context context) {
+        super(context, DATABASE_NAME, null,DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("CREATE TABLE "+TABLE_NAME+" ("
+                +COLUMN_ID      +" INTEGER PRIMARY KEY, "
+                +COLUMN_ITEM_ID +" INTEGER, "
+                +COLUMN_ITEM    +" TEXT, "
+                +COLUMN_TYPE    +" TEXT )");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        //for development only
+        //prepare for data migration in case table scheme is updated
+        //so no data loss occur
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME);
+        onCreate(sqLiteDatabase);
+    }
+
+    //suppose to be dynamic
+    public ArrayList<String> getListDropdownValue(String value){
+
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        
+        Cursor cursor = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE "+COLUMN_TYPE+" = ?",new String[]{value});
+
+        cursor.moveToFirst();
+        Log.d(TAG,"Query is valid and Move to 1st executed");
+
+        //to add title in list in each every list with index of 0
+        arrayList.add(value);
+
+        while(!cursor.isAfterLast()){
+            String item = cursor.getString(cursor.getColumnIndex(COLUMN_ITEM));
+            arrayList.add(item);
+            cursor.moveToNext();
+        }
+        Log.d(TAG,"cursor Arraylist: "+arrayList.toString());
+        Log.d(TAG,"cursor number of rows : "+DatabaseUtils.queryNumEntries(db, TABLE_NAME));
+
+        cursor.close();
+        return arrayList;
+    }
+}
