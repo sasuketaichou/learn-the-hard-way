@@ -34,10 +34,11 @@ public class Fragment1 extends Fragment {
 
         //define arraylist
         items = new ArrayList<>();
+        Log.v("retrofit","Items size oncreate fragment :"+String.valueOf(items.size()));
 
         //testing
-        ApiClient apiClient = new ApiClient(getContext());
-        apiClient.login("glpi","glpi");
+        //ApiClient apiClient = new ApiClient(getContext());
+        //apiClient.login("glpi","glpi");
 
     }
 
@@ -89,14 +90,13 @@ public class Fragment1 extends Fragment {
 
         //add all list dropdown here
         items.add(database.getListDropdownValue(ApiClient.TICKET_TYPE));
-        items.add(database.getListDropdownValue(ApiClient.TICKET_CATEGORY));
         items.add(database.getListDropdownValue(ApiClient.TICKET_URGENCY));
-
-        //to be corrected
-        //items.add(database.getListDropdownValue(ApiClient.TICKET_HARDWARE));
+        items.add(database.getListDropdownValue(ApiClient.TICKET_CATEGORY));
+        items.add(database.getListDropdownValue(ApiClient.TICKET_HARDWARE));
+        Log.v("retrofit","items : "+items.toString());
 
         //to refresh view
         adapter.notifyDataSetChanged();
-        Log.d("retrofit",items.toString());
+        Log.d("retrofit","notifydataset : "+items.toString());
     }
 }

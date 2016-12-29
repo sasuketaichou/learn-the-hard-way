@@ -34,7 +34,7 @@ public class GlpiDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE "+TABLE_NAME+" ("
                 +COLUMN_ID      +" INTEGER PRIMARY KEY, "
-                +COLUMN_ITEM_ID +" INTEGER, "
+                +COLUMN_ITEM_ID +" TEXT, "
                 +COLUMN_ITEM    +" TEXT, "
                 +COLUMN_TYPE    +" TEXT )");
     }
@@ -54,7 +54,7 @@ public class GlpiDatabase extends SQLiteOpenHelper {
         ArrayList<String> arrayList = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        
+
         Cursor cursor = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE "+COLUMN_TYPE+" = ?",new String[]{value});
 
         cursor.moveToFirst();
@@ -62,6 +62,7 @@ public class GlpiDatabase extends SQLiteOpenHelper {
 
         //to add title in list in each every list with index of 0
         arrayList.add(value);
+        Log.d(TAG,"cursor Arraylist title : "+arrayList.toString());
 
         while(!cursor.isAfterLast()){
             String item = cursor.getString(cursor.getColumnIndex(COLUMN_ITEM));
@@ -69,7 +70,6 @@ public class GlpiDatabase extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         Log.d(TAG,"cursor Arraylist: "+arrayList.toString());
-        Log.d(TAG,"cursor number of rows : "+DatabaseUtils.queryNumEntries(db, TABLE_NAME));
 
         cursor.close();
         return arrayList;

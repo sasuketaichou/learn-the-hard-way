@@ -18,21 +18,25 @@ import java.util.List;
 
 public class ViewHolder1 extends RecyclerView.ViewHolder {
 
-    private TextView label1;
-    private Spinner spinner;
+    private TextView title,item,edit;
 
     public ViewHolder1(View itemView) {
         super(itemView);
-        label1 = (TextView) itemView.findViewById(R.id.text1);
-        spinner = (Spinner) itemView.findViewById(R.id.spinner);
+        title = (TextView) itemView.findViewById(R.id.titleView1);
+        item = (TextView) itemView.findViewById(R.id.item);
+        edit = (TextView)itemView.findViewById(R.id.editView1);
     }
 
-    public TextView getLabel1() {
-        return label1;
+
+    public TextView getTitle() {
+        return title;
     }
 
-    public Spinner getSpinner() {
-        return spinner;
+    public TextView getItem() {
+        return item;
     }
 
+    public TextView getEdit() {
+        return edit;
+    }
 }

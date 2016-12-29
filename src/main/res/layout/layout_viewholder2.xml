@@ -1,24 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/llContainer2"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp">
 
     <TextView
-        android:id="@+id/text3"
-        android:layout_width="match_parent"
+        android:id="@+id/titleView2"
+        android:text="@string/email"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:gravity="center_vertical"/>
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/text4"
-        android:layout_width="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:text="@string/edit"
+        android:id="@+id/editView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="@string/email_followup"
+        android:layout_below="@+id/titleView2"
+        android:id="@+id/followupView2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
         android:gravity="center_vertical" />
 
-</LinearLayout>
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:text="YES"
+        android:id="@+id/emailAnswerView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/followupView2"
+        android:layout_toRightOf="@+id/followupView2"
+        android:layout_toEndOf="@+id/followupView2" />
+
+    <TextView
+        android:text="dadadad@hatoo.ckom"
+        android:layout_below="@+id/followupView2"
+        android:id="@+id/emailView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

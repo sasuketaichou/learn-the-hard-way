@@ -10,27 +10,34 @@ import android.widget.TextView;
 
 public class ViewHolder2 extends RecyclerView.ViewHolder {
 
-    private TextView label3, label4;
+    private TextView title, email,followup,emailAnswer,edit;
 
     public ViewHolder2(View v) {
         super(v);
-        label3 = (TextView) v.findViewById(R.id.text3);
-        label4 = (TextView) v.findViewById(R.id.text4);
+        title = (TextView) v.findViewById(R.id.titleView2);
+        email = (TextView) v.findViewById(R.id.emailView2);
+        followup = (TextView)v.findViewById(R.id.followupView2);
+        edit = (TextView)v.findViewById(R.id.editView2);
+        emailAnswer = (TextView)v.findViewById(R.id.emailAnswerView2);
     }
 
-    public TextView getLabel3() {
-        return label3;
+    public TextView getTitle() {
+        return title;
     }
 
-    public void setLabel3(TextView label3) {
-        this.label3 = label3;
+    public TextView getEmail() {
+        return email;
     }
 
-    public TextView getLabel4() {
-        return label4;
+    public TextView getFollowup() {
+        return followup;
     }
 
-    public void setLabel4(TextView label4) {
-        this.label4 = label4;
+    public TextView getEmailAnswer() {
+        return emailAnswer;
+    }
+
+    public TextView getEdit() {
+        return edit;
     }
 }

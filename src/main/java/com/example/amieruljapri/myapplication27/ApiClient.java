@@ -16,11 +16,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.example.amieruljapri.myapplication27.GlpiDatabase.COLUMN_ITEM;
-import static com.example.amieruljapri.myapplication27.GlpiDatabase.COLUMN_ITEM_ID;
-import static com.example.amieruljapri.myapplication27.GlpiDatabase.COLUMN_TYPE;
-import static com.example.amieruljapri.myapplication27.GlpiDatabase.TABLE_NAME;
-
 /**
  * Created by amierul.japri on 12/19/2016.
  */
@@ -54,14 +49,12 @@ public class ApiClient {
     private ApiInterface apiService = null;
     private GlpiDatabase database = null;
     private ArrayList<String> mType = null;
-    private int count = -1;
+    private int count;
 
     public ApiClient(Context context){
         //get context for database
         database = new GlpiDatabase(context);
     }
-
-
 
     //to be used only inside this class
     //tutorial used to be public
@@ -93,28 +86,28 @@ public class ApiClient {
          *  1st executed enqueue
          */
 
-        Call<List<PojoListDropdownValues>> call = apiService.getListDropdownValues(data);
-        call.enqueue(new Callback<List<PojoListDropdownValues>>() {
+        Call<List<PojoTypeUrgencyValues>> call = apiService.getTypeUrgencyValues(data);
+        call.enqueue(new Callback<List<PojoTypeUrgencyValues>>() {
             @Override
-            public void onResponse(Call<List<PojoListDropdownValues>> call, Response<List<PojoListDropdownValues>> response) {
+            public void onResponse(Call<List<PojoTypeUrgencyValues>> call, Response<List<PojoTypeUrgencyValues>> response) {
 
                 //to increase count
                 //for background use
                 count++;
 
-                //getReadable
+                //getWritable
                 SQLiteDatabase db = database.getWritableDatabase();
                 ContentValues cv = new ContentValues();
 
                 for (int i =0; i<response.body().size();i++){
 
-                    cv.put(COLUMN_ITEM, response.body().get(i).name);
-                    cv.put(COLUMN_TYPE,mType.get(count));
-                    cv.put(COLUMN_ITEM_ID,response.body().get(i).id);
-                    Log.d(TAG,COLUMN_ITEM+" : "+response.body().get(i).name);
+                    cv.put(GlpiDatabase.COLUMN_ITEM, response.body().get(i).name);
+                    cv.put(GlpiDatabase.COLUMN_TYPE,mType.get(count));
+                    cv.put(GlpiDatabase.COLUMN_ITEM_ID,String.valueOf(response.body().get(i).id));
+                    Log.d(TAG,GlpiDatabase.COLUMN_ITEM+" : "+response.body().get(i).name);
 
                     //insert to database
-                    db.insert(TABLE_NAME,null,cv);
+                    db.insert(GlpiDatabase.TABLE_NAME,null,cv);
                     Log.d(TAG,cv.toString());
 
                 }
@@ -122,7 +115,7 @@ public class ApiClient {
             }
 
             @Override
-            public void onFailure(Call<List<PojoListDropdownValues>> call, Throwable t) {
+            public void onFailure(Call<List<PojoTypeUrgencyValues>> call, Throwable t) {
                 Log.e(TAG,mType.get(count)+" :"+t);
             }
         });
@@ -158,12 +151,14 @@ public class ApiClient {
                 //to set type
                 mType = new ArrayList<>();
 
-                updateDropdown(TICKET_TYPE);
-                updateDropdown(TICKET_URGENCY);
-                updateDropdown(TICKET_CATEGORY);
+                //updateDropdown(TICKET_TYPE);
+                //updateDropdown(TICKET_URGENCY);
+                //updateDropdown(TICKET_CATEGORY);
 
                 //different method
                 //updateDropdownHardware();
+
+                resetCount();
 
             }
 
@@ -173,6 +168,12 @@ public class ApiClient {
                 Log.e(TAG,"LOGINfailed"+t);
             }
         });
+    }
+
+    //set count to -1 everytime count is been used
+    private void resetCount() {
+        count = -1;
+        //count = (count != -1)? -1:-1;
     }
 
     private void updateDropdownHardware() {
@@ -191,12 +192,12 @@ public class ApiClient {
 
                 for (int i =0; i<response.body().size();i++) {
 
-                    cv.put(COLUMN_ITEM, response.body().get(i).name);
-                    cv.put(COLUMN_TYPE, TICKET_HARDWARE);
-                    cv.put(COLUMN_ITEM_ID, response.body().get(i).id);
-                    Log.d(TAG, COLUMN_ITEM + " : " + response.body().get(i).name);
+                    cv.put(GlpiDatabase.COLUMN_ITEM, response.body().get(i).name);
+                    cv.put(GlpiDatabase.COLUMN_TYPE, TICKET_HARDWARE);
+                    cv.put(GlpiDatabase.COLUMN_ITEM_ID, response.body().get(i).id);
+                    Log.d(TAG, GlpiDatabase.COLUMN_ITEM + " : " + response.body().get(i).name);
 
-                    db.insert(TABLE_NAME, null, cv);
+                    db.insert(GlpiDatabase.TABLE_NAME, null, cv);
                     Log.d(TAG, cv.toString());
                 }
             }

@@ -22,7 +22,11 @@ public class MainActivity extends FragmentActivity {
     public static final String ACCOUNT_TYPE = "com.example.amieruljapri";
     public static final String ACCOUNT = "dummyaccount";
     Account mAccount;
-
+    
+    private Fragment1 fragment1;
+    private Fragment2 fragment2;
+    private Fragment3 fragment3;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +43,9 @@ public class MainActivity extends FragmentActivity {
 
         //this start 1st
         //and then recreate again for bottombar
-        Fragment2 fragment2 = new Fragment2();
+        fragment1 = new Fragment1();
+        fragment3 = new Fragment3();
+        fragment2 = new Fragment2();
         fragment2.setArguments(getIntent().getExtras());
 
         getSupportFragmentManager().beginTransaction()
@@ -85,28 +91,41 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onTabSelected(@IdRes int tabId) {
 
-                Fragment fragment = null;
-
                 switch (tabId) {
                     case R.id.tab_search:
-                        fragment = new Fragment1();
+                        displayFragment(fragment1,fragment2,fragment3);
                         break;
 
                     case R.id.tab_camera:
-                        fragment = new Fragment2();
+                        displayFragment(fragment2,fragment1,fragment3);
                         break;
 
                     case R.id.tab_gallery:
-                        fragment = new Fragment2();
+                        displayFragment(fragment3,fragment2,fragment1);
                         break;
                 }
-
-
-                FragmentManager manager = getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(R.id.contentContainer,fragment);
-                transaction.commit();
             }
         });
+    }
+
+    private void displayFragment(Fragment fragmentShow, Fragment fragmentHide,Fragment fragmentHide2) {
+
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+
+        if(fragmentShow.isAdded()){
+            transaction.show(fragmentShow);
+        } else {
+            transaction.add(R.id.contentContainer,fragmentShow);
+        }
+
+        if (fragmentHide.isAdded()){
+            transaction.hide(fragmentHide);
+        }
+
+        if (fragmentHide2.isAdded()){
+            transaction.hide(fragmentHide2);
+        }
+        transaction.commit();
     }
 }
