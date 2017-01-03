@@ -27,19 +27,23 @@ public class ApiClient {
     public static final String TICKET_URGENCY = "ticketurgency";
     public static final String TICKET_HARDWARE = "helpdesk";
     public static final String TICKET_LOCATION = "location";
-
-    public static final String METHOD = "method";
-    public static final String SESSION = "session";
-
-    public static final String METHOD_DROPDOWNVALUES = "glpi.listDropdownValues";
-    public static final String DROPDOWNVALUES_DROPDOWN = "dropdown";
+    public static final String EMAIL = "email_user";
 
 
-    public String METHOD_LOGIN = "glpi.doLogin";
-    public String METHOD_LOGIN_PASS = "login_password";
-    public String METHOD_LOGIN_USERNAME = "login_name";
+    private String METHOD = "method";
+    private String SESSION = "session";
 
-    public static final String METHOD_HELPDESK = "glpi.listHelpdeskTypes";
+    private String METHOD_DROPDOWNVALUES = "glpi.listDropdownValues";
+    private String DROPDOWNVALUES_DROPDOWN = "dropdown";
+
+
+    private String METHOD_LOGIN = "glpi.doLogin";
+    private String METHOD_LOGIN_PASS = "login_password";
+    private String METHOD_LOGIN_USERNAME = "login_name";
+
+    private String METHOD_HELPDESK = "glpi.listHelpdeskTypes";
+
+    private String METHOD_MYINFO = "glpi.getMyInfo";
 
     public static final String BASE_URL = "http://10.4.133.211/glpi/plugins/webservices/";
     private static Retrofit retrofit = null;
@@ -140,9 +144,11 @@ public class ApiClient {
             @Override
             public void onResponse(Call<GlpiLogin> call, Response<GlpiLogin> response) {
 
-                /*
-                logincall is on background. after ui thread is finish, then background (enqueue)
-                only after that u get the session key required to use other rest GLPI method
+                /**
+                 logincall is on background.
+                 after ui thread is finish, then background (enqueue)
+                 only after that u get the session key required
+                 to use other rest GLPI method
                 */
 
                 session = response.body().session;
@@ -158,7 +164,10 @@ public class ApiClient {
                 //different method
                 //updateDropdownHardware();
 
-                resetCount();
+                //getinfo
+                //getInfo();
+
+                //resetCount();
 
             }
 
@@ -205,6 +214,34 @@ public class ApiClient {
             @Override
             public void onFailure(Call<List<PojoHelpdeskValues>> call, Throwable t) {
                 Log.e(TAG,TICKET_HARDWARE+" : "+t);
+            }
+        });
+    }
+
+    private void getInfo(){
+
+        Map<String,String> data = new HashMap<>();
+        data.put(METHOD,METHOD_MYINFO);
+        data.put(SESSION,session);
+
+        Call<PojoMyInfo> call = apiService.getMyInfo(data);
+        call.enqueue(new Callback<PojoMyInfo>() {
+            @Override
+            public void onResponse(Call<PojoMyInfo> call, Response<PojoMyInfo> response) {
+                SQLiteDatabase db = database.getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                //for now
+                //just to get email
+                //for view 3
+                cv.put(GlpiDatabase.COLUMN_TYPE,EMAIL);
+                cv.put(GlpiDatabase.COLUMN_ITEM_ID,response.body().name);
+                cv.put(GlpiDatabase.COLUMN_ITEM,response.body().email);
+                db.insert(GlpiDatabase.TABLE_NAME,null,cv);
+            }
+
+            @Override
+            public void onFailure(Call<PojoMyInfo> call, Throwable t) {
+
             }
         });
     }

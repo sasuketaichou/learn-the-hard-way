@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by amierul.japri on 12/19/2016.
@@ -49,9 +52,9 @@ public class GlpiDatabase extends SQLiteOpenHelper {
     }
 
     //suppose to be dynamic
-    public ArrayList<String> getListDropdownValue(String value){
+    public Map<String,String> getListDropdownValue(String value){
 
-        ArrayList<String> arrayList = new ArrayList<>();
+        Map<String,String> map = new TreeMap<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -60,18 +63,35 @@ public class GlpiDatabase extends SQLiteOpenHelper {
         cursor.moveToFirst();
         Log.d(TAG,"Query is valid and Move to 1st executed");
 
-        //to add title in list in each every list with index of 0
-        arrayList.add(value);
-        Log.d(TAG,"cursor Arraylist title : "+arrayList.toString());
-
         while(!cursor.isAfterLast()){
             String item = cursor.getString(cursor.getColumnIndex(COLUMN_ITEM));
-            arrayList.add(item);
+            String id = cursor.getString(cursor.getColumnIndex(COLUMN_ITEM_ID));
+            map.put(id,item);
             cursor.moveToNext();
         }
-        Log.d(TAG,"cursor Arraylist: "+arrayList.toString());
+        Log.d(TAG,"cursor Hashmap: "+map.toString());
 
         cursor.close();
-        return arrayList;
+        return map;
+    }
+
+    //getemail
+    public String getEmail(String name){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM "+TABLE_NAME+" WHERE "+COLUMN_ITEM_ID+" = ?",new String[]{name});
+        cursor.moveToFirst();
+
+        String email = null;
+
+        while(!cursor.isAfterLast()) {
+            email = cursor.getString(cursor.getColumnIndex(COLUMN_ITEM));
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+
+        return email;
     }
 }

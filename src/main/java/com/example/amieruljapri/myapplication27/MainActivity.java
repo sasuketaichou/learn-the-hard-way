@@ -92,16 +92,19 @@ public class MainActivity extends FragmentActivity {
             public void onTabSelected(@IdRes int tabId) {
 
                 switch (tabId) {
-                    case R.id.tab_search:
+                    case R.id.tab_create:
                         displayFragment(fragment1,fragment2,fragment3);
                         break;
 
-                    case R.id.tab_camera:
+                    case R.id.tab_home:
                         displayFragment(fragment2,fragment1,fragment3);
                         break;
 
-                    case R.id.tab_gallery:
+                    case R.id.tab_faq:
                         displayFragment(fragment3,fragment2,fragment1);
+                        break;
+
+                    case R.id.tab_ticket:
                         break;
                 }
             }

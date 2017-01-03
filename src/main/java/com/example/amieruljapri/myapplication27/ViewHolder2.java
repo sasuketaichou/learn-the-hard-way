@@ -8,7 +8,7 @@ import android.widget.TextView;
  * Created by amierul.japri on 11/16/2016.
  */
 
-public class ViewHolder2 extends RecyclerView.ViewHolder {
+public class ViewHolder2 extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private TextView title, email,followup,emailAnswer,edit;
 
@@ -18,7 +18,9 @@ public class ViewHolder2 extends RecyclerView.ViewHolder {
         email = (TextView) v.findViewById(R.id.emailView2);
         followup = (TextView)v.findViewById(R.id.followupView2);
         edit = (TextView)v.findViewById(R.id.editView2);
+        edit.setOnClickListener(this);
         emailAnswer = (TextView)v.findViewById(R.id.emailAnswerView2);
+
     }
 
     public TextView getTitle() {
@@ -39,5 +41,12 @@ public class ViewHolder2 extends RecyclerView.ViewHolder {
 
     public TextView getEdit() {
         return edit;
+    }
+
+    @Override
+    public void onClick(View view) {
+        //do something
+
+
     }
 }

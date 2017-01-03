@@ -17,6 +17,9 @@ public interface ApiInterface {
     Call<GlpiLogin> login(@QueryMap Map<String,String> params);
 
     @GET("rest.php")
+    Call<PojoMyInfo> getMyInfo(@QueryMap Map<String,String> params);
+
+    @GET("rest.php")
     Call<List<PojoTypeUrgencyValues>> getTypeUrgencyValues(@QueryMap Map<String,String> params);
 
     @GET("rest.php")

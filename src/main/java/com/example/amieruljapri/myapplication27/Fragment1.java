@@ -12,16 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by amierul.japri on 9/15/2016.
  */
 public class Fragment1 extends Fragment {
 
-    private List<ArrayList<String>> items = null;
+    List<Object> items = null;
     private GlpiDatabase database = null;
     private ComplexRecyclerViewAdapter adapter = null;
 
@@ -32,9 +34,7 @@ public class Fragment1 extends Fragment {
         //database instantiate
         database = new GlpiDatabase(getActivity());
 
-        //define arraylist
         items = new ArrayList<>();
-        Log.v("retrofit","Items size oncreate fragment :"+String.valueOf(items.size()));
 
         //testing
         //ApiClient apiClient = new ApiClient(getContext());
@@ -66,7 +66,6 @@ public class Fragment1 extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         //instantiate adapter
-        //pass item
         adapter = new ComplexRecyclerViewAdapter(items);
 
         recyclerView.setAdapter(adapter);
@@ -74,6 +73,13 @@ public class Fragment1 extends Fragment {
         //divider, since Oct 16, google implement DividerItemDecoration.java in recyclerview support library 25
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),
                 mLayoutManager.getOrientation()));
+
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                Toast.makeText(getContext(),v.toString()+" : "+position,Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return rootView;
     }
@@ -89,10 +95,18 @@ public class Fragment1 extends Fragment {
         */
 
         //add all list dropdown here
+        //0
         items.add(database.getListDropdownValue(ApiClient.TICKET_TYPE));
+        //1
         items.add(database.getListDropdownValue(ApiClient.TICKET_URGENCY));
+        //2
         items.add(database.getListDropdownValue(ApiClient.TICKET_CATEGORY));
+        //email view
+        //3
+        items.add(database.getEmail("glpi"));
+        //4
         items.add(database.getListDropdownValue(ApiClient.TICKET_HARDWARE));
+
         Log.v("retrofit","items : "+items.toString());
 
         //to refresh view

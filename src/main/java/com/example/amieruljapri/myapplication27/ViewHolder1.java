@@ -39,4 +39,6 @@ public class ViewHolder1 extends RecyclerView.ViewHolder {
     public TextView getEdit() {
         return edit;
     }
+
+
 }
