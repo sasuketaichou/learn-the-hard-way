@@ -15,6 +15,9 @@ import android.widget.Toast;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends FragmentActivity {
 
     public static final String AUTHORITY = "com.example.amieruljapri.myapplication27";
@@ -22,20 +25,21 @@ public class MainActivity extends FragmentActivity {
     public static final String ACCOUNT_TYPE = "com.example.amieruljapri";
     public static final String ACCOUNT = "dummyaccount";
     Account mAccount;
-    
+
     private Fragment1 fragment1;
     private Fragment2 fragment2;
     private Fragment3 fragment3;
-    
+    private Fragment4 fragment4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         //create Dummy account
         mAccount = CreateSyncAccount(this);
 
-        if(findViewById(R.id.contentContainer) != null){
+        if (findViewById(R.id.contentContainer) != null) {
             if (savedInstanceState != null) {
                 return;
             }
@@ -45,36 +49,38 @@ public class MainActivity extends FragmentActivity {
         //and then recreate again for bottombar
         fragment1 = new Fragment1();
         fragment3 = new Fragment3();
+        fragment4 = new Fragment4();
         fragment2 = new Fragment2();
-        fragment2.setArguments(getIntent().getExtras());
+
+        Fragment dummy = new Fragment();
+        dummy.setArguments(getIntent().getExtras());
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.contentContainer, fragment2).commit();
-        
+                .add(R.id.contentContainer, dummy).commit();
+
         initLay();
     }
 
     public static Account CreateSyncAccount(Context context) {
         //Create the account type and default account
-        Account newAccount = new Account(ACCOUNT,ACCOUNT_TYPE);
+        Account newAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
 
         //Get an instance of the Android account manager
-        AccountManager accountManager = (AccountManager)context.getSystemService(ACCOUNT_SERVICE);
+        AccountManager accountManager = (AccountManager) context.getSystemService(ACCOUNT_SERVICE);
 
         /*
          * Add the account and account type, no password or user data
          * If successful, return the Account object, otherwise report an error.
          */
 
-        if(accountManager.addAccountExplicitly(newAccount,null,null)){
+        if (accountManager.addAccountExplicitly(newAccount, null, null)) {
             /*
              * If you don't set android:syncable="true" in
              * in your <provider> element in the manifest,
              * then call context.setIsSyncable(account, AUTHORITY, 1)
              * here.
              */
-        }
-        else {
+        } else {
             /*
              * The account exists or some other error occurred. Log this, report it,
              * or handle it internally.
@@ -93,25 +99,26 @@ public class MainActivity extends FragmentActivity {
 
                 switch (tabId) {
                     case R.id.tab_create:
-                        displayFragment(fragment1,fragment2,fragment3);
+                        displayFragment(fragment1,fragment2,fragment3,fragment4);
                         break;
 
                     case R.id.tab_home:
-                        displayFragment(fragment2,fragment1,fragment3);
+                        displayFragment(fragment2,fragment3,fragment4,fragment1);
                         break;
 
                     case R.id.tab_faq:
-                        displayFragment(fragment3,fragment2,fragment1);
+                        displayFragment(fragment3,fragment4,fragment1,fragment2);
                         break;
 
                     case R.id.tab_ticket:
+                        displayFragment(fragment4,fragment1,fragment2,fragment3);
                         break;
                 }
             }
         });
     }
 
-    private void displayFragment(Fragment fragmentShow, Fragment fragmentHide,Fragment fragmentHide2) {
+    private void displayFragment(Fragment fragmentShow, Fragment fragmentHide,Fragment fragmentHide2,Fragment fragmentHide3) {
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
@@ -128,6 +135,10 @@ public class MainActivity extends FragmentActivity {
 
         if (fragmentHide2.isAdded()){
             transaction.hide(fragmentHide2);
+        }
+
+        if (fragmentHide3.isAdded()){
+            transaction.hide(fragmentHide3);
         }
         transaction.commit();
     }
