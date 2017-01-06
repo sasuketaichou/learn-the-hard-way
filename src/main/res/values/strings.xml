@@ -3,4 +3,6 @@
     <string name="email">EMAIL</string>
     <string name="edit">Edit</string>
     <string name="email_followup">Email followup -   </string>
+    <string name="title">TITLE</string>
+    <string name="description">DESCRIPTION</string>
 </resources>

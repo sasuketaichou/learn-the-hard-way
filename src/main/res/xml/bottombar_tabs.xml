@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tabs>
     <tab
-        id="@+id/tab_search"
-        icon="@drawable/ic_action_search"
-        title="Search" />
+        id="@+id/tab_ticket"
+        icon="@drawable/file"
+        title="Ticket" />
     <tab
-        id="@+id/tab_camera"
-        icon="@drawable/icon_camera"
-        title="Camera" />
+        id="@+id/tab_create"
+        icon="@drawable/plus_box"
+        title="Create" />
     <tab
-        id="@+id/tab_gallery"
-        icon="@drawable/icon_gallery"
-        title="Gallery" />
+        id="@+id/tab_home"
+        icon="@drawable/home"
+        title="Home" />
+    <tab
+        id="@+id/tab_faq"
+        icon="@drawable/help_circle"
+        title="FAQ" />
 </tabs>

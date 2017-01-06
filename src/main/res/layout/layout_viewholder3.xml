@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/llContainer3"
+    android:padding="5dp">
+
+    <TextView
+        android:text="@string/title"
+        android:id="@+id/titleView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    <EditText
+        android:focusable="false"
+        android:layout_below="@+id/titleView3"
+        android:hint="TITLE"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:id="@+id/editTextTitleview3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@+id/editTextTitleview3"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/description"
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:focusable="false"
+        android:layout_below="@+id/description"
+        android:hint="DESCRIPTION"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:id="@+id/editTextDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:text="@string/edit"
+        android:id="@+id/editView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
