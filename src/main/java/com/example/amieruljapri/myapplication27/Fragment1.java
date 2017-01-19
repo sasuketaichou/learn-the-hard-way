@@ -57,14 +57,6 @@ public class Fragment1 extends Fragment implements ItemClickSupport.OnItemClickL
         //always set the third param as false
         View rootView =inflater.inflate(R.layout.fragment_create,container,false);
 
-        Button button = (Button)rootView.findViewById(R.id.addButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //passData();
-            }
-        });
-
         RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_view);
 
         //need to declare as LinearLayoutManager as to use getOrientation method below
@@ -142,7 +134,7 @@ public class Fragment1 extends Fragment implements ItemClickSupport.OnItemClickL
                     }
                 });
 
-                ad.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                ad.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //want something?
@@ -166,11 +158,7 @@ public class Fragment1 extends Fragment implements ItemClickSupport.OnItemClickL
                 ad.setSingleChoiceItems(choice, -2, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (choice[i].equals("Yes")) {
-                            vh2.getEmailAnswer().setText("YES");
-                        } else {
-                            vh2.getEmailAnswer().setText("NO");
-                        }
+                        vh2.getEmailAnswer().setText(choice[i]);
                         dialogInterface.dismiss();
                     }
                 });
@@ -194,17 +182,19 @@ public class Fragment1 extends Fragment implements ItemClickSupport.OnItemClickL
 
                 final EditText titleBox = new EditText(getContext());
                 TextView title = new TextView(getContext());
-                title.setText("Title");
+                //title.setText("Title");
                 title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
                 titleBox.setHint("Title");
+                titleBox.setBackgroundResource(R.drawable.border);
                 linearLayout.addView(title);
                 linearLayout.addView(titleBox);
 
                 final EditText descriptionBox = new EditText(getContext());
                 TextView descTitle = new TextView(getContext());
-                descTitle.setText("Description");
+                //descTitle.setText("Description");
                 descTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
                 descriptionBox.setHint("Description");
+                descriptionBox.setBackgroundResource(R.drawable.border);
                 //descriptionBox.setHeight(500);
                 //descriptionBox.setWidth(5000);
                 //descriptionBox.setPadding(100,100,100,100);
@@ -213,7 +203,7 @@ public class Fragment1 extends Fragment implements ItemClickSupport.OnItemClickL
 
                 ad.setView(linearLayout);
 
-                ad.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                ad.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //titleBox.getText().toString();
@@ -235,7 +225,4 @@ public class Fragment1 extends Fragment implements ItemClickSupport.OnItemClickL
             }
         }
     }
-
-
-
 }

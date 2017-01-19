@@ -43,6 +43,8 @@ public class ApiClient {
 
     private String METHOD_HELPDESK = "glpi.listHelpdeskTypes";
 
+    private String METHOD_LISTTICKETS = "glpi.listTickets";
+
     private String METHOD_MYINFO = "glpi.getMyInfo";
 
     public static final String BASE_URL = "http://10.4.133.211/glpi/plugins/webservices/";
@@ -54,11 +56,14 @@ public class ApiClient {
     private GlpiDatabase database = null;
     private ArrayList<String> mType = null;
     private int count;
+    private boolean authentication;
 
     public ApiClient(Context context){
         //get context for database
         database = new GlpiDatabase(context);
     }
+
+    public ApiClient(){}
 
     //to be used only inside this class
     //tutorial used to be public
@@ -72,7 +77,7 @@ public class ApiClient {
         return retrofit;
     }
 
-    public void updateDropdown(String type){
+    private void updateDropdown(String type){
         //map for multiple data/params
         Map<String,String> data = new HashMap<>();
         data.put(METHOD,METHOD_DROPDOWNVALUES);
@@ -103,6 +108,9 @@ public class ApiClient {
                 SQLiteDatabase db = database.getWritableDatabase();
                 ContentValues cv = new ContentValues();
 
+                //to iterate without the use of count
+                //while(mType.iterator().hasNext())
+
                 for (int i =0; i<response.body().size();i++){
 
                     cv.put(GlpiDatabase.COLUMN_ITEM, response.body().get(i).name);
@@ -113,9 +121,7 @@ public class ApiClient {
                     //insert to database
                     db.insert(GlpiDatabase.TABLE_NAME,null,cv);
                     Log.d(TAG,cv.toString());
-
                 }
-
             }
 
             @Override
@@ -125,8 +131,10 @@ public class ApiClient {
         });
     }
 
-    public void login(String username, String pass) {
-
+    //pass update as true to update for 1st time
+    //to be continue using shared preferences
+    public void login(String username, String pass, final boolean update) {
+        
         Map<String,String> data = new HashMap<>();
         data.put(METHOD,METHOD_LOGIN);
         data.put(METHOD_LOGIN_PASS,pass);
@@ -144,31 +152,35 @@ public class ApiClient {
             @Override
             public void onResponse(Call<GlpiLogin> call, Response<GlpiLogin> response) {
 
-                /**
+                /*
                  logincall is on background.
                  after ui thread is finish, then background (enqueue)
                  only after that u get the session key required
                  to use other rest GLPI method
-                */
+                 */
 
                 session = response.body().session;
-                Log.d(TAG,"lOGINsuccess :"+session);
+                authentication = session!=null;
+                Log.d(TAG,"lOGINsuccess :" + session);
+                Log.v(TAG,"lOGINsuccess :"+authentication);
 
-                //to set type
-                mType = new ArrayList<>();
+                if (update) {
 
-                //updateDropdown(TICKET_TYPE);
-                //updateDropdown(TICKET_URGENCY);
-                //updateDropdown(TICKET_CATEGORY);
+                    //to set type
+                    mType = new ArrayList<>();
 
-                //different method
-                //updateDropdownHardware();
+                    updateDropdown(TICKET_TYPE);
+                    updateDropdown(TICKET_URGENCY);
+                    updateDropdown(TICKET_CATEGORY);
 
-                //getinfo
-                //getInfo();
+                    //different method
+                    updateDropdownHardware();
 
-                //resetCount();
+                    //getinfo
+                    getInfo();
 
+                    resetCount();
+                }
             }
 
             @Override
@@ -244,5 +256,43 @@ public class ApiClient {
 
             }
         });
+    }
+
+    public List<PojoListTicketsValues> getTicketStatus(){
+
+        final List<PojoListTicketsValues> list = new ArrayList<>();
+
+        Map<String,String> data = new HashMap<>();
+        data.put(METHOD,METHOD_LISTTICKETS);
+        data.put(SESSION,session);
+        Log.v("retrofit","List ticketvalues Session : "+session);
+        //mine : mirror the user requesting for ticket
+        data.put("mine",null);
+        //id2name : option to enable id to name translation of dropdown fields
+        data.put("id2name",null);
+
+        Call<List<PojoListTicketsValues>> call = apiService.getListticketValues(data);
+        call.enqueue(new Callback<List<PojoListTicketsValues>>() {
+            @Override
+            public void onResponse(Call<List<PojoListTicketsValues>> call, Response<List<PojoListTicketsValues>> response) {
+
+                for (PojoListTicketsValues mResponse : response.body()){
+                    list.add(mResponse);
+                    Log.v("retrofit","List ticketvalues Status : "+mResponse.status);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PojoListTicketsValues>> call, Throwable t) {
+
+            }
+        });
+
+        return list;
+    }
+
+    public boolean authenticate() {
+        //Log.v("retrofit",session);
+        return authentication;
     }
 }

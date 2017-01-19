@@ -25,4 +25,7 @@ public interface ApiInterface {
     @GET("rest.php")
     Call<List<PojoHelpdeskValues>> getHelpdeskValues(@QueryMap Map<String,String> params);
 
+    @GET("rest.php")
+    Call<List<PojoListTicketsValues>> getListticketValues(@QueryMap Map<String,String> params);
+
 }
