@@ -5,4 +5,12 @@
     <string name="email_followup">Email followup -   </string>
     <string name="title">TITLE</string>
     <string name="description">DESCRIPTION</string>
+    <string name="tickets">Tickets</string>
+    <string name="number">Number</string>
+    <string name="newStatus">New</string>
+    <string name="processing_assigned">Processing (assigned)</string>
+    <string name="processing_planned">Processing (planned)</string>
+    <string name="pending">Pending</string>
+    <string name="solved">Solved</string>
+    <string name="closed">Closed</string>
 </resources>

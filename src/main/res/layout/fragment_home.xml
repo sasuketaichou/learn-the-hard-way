@@ -1,12 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="10dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:stretchColumns="0">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home"/>
+    <TableRow
+        android:gravity="center_horizontal"
+        android:padding="5dp"
+        android:background="@drawable/border"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
 
-</LinearLayout>
+        <TextView
+            android:padding="5dp"
+            android:background="@drawable/table_cell_bg"
+            android:gravity="center_horizontal"
+            android:layout_column="0"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tickets"
+            />
+
+        <TextView
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number" />
+
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal"
+        android:background="@drawable/table_cell_bg"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:background="@drawable/table_cell_bg"
+            android:padding="5dp"
+            android:layout_column="0"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/newStatus"
+            />
+
+        <TextView
+            android:id="@+id/newSt"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number" />
+
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal"
+        android:background="@drawable/table_cell_bg"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:background="@drawable/table_cell_bg"
+            android:padding="5dp"
+            android:layout_column="0"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/processing_assigned"
+            />
+
+        <TextView
+            android:id="@+id/assignSt"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number" />
+
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal"
+        android:background="@drawable/table_cell_bg"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:background="@drawable/table_cell_bg"
+            android:padding="5dp"
+            android:layout_column="0"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/processing_planned"
+            />
+
+        <TextView
+            android:id="@+id/plannedSt"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number" />
+
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal"
+        android:background="@drawable/table_cell_bg"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:background="@drawable/table_cell_bg"
+            android:padding="5dp"
+            android:layout_column="0"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pending"
+            />
+
+        <TextView
+            android:id="@+id/pendingSt"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number" />
+
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal"
+        android:background="@drawable/table_cell_bg"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:background="@drawable/table_cell_bg"
+            android:padding="5dp"
+            android:layout_column="0"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/solved"
+            />
+
+        <TextView
+            android:id="@+id/solvedSt"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number" />
+
+    </TableRow>
+
+
+
+    <TableRow
+        android:gravity="center_horizontal"
+        android:background="@drawable/table_row_last_bg"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:padding="5dp"
+            android:background="@drawable/table_row_last_bg"
+            android:layout_column="0"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/closed"
+            />
+
+        <TextView
+            android:id="@+id/closedSt"
+            android:padding="5dp"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number" />
+
+    </TableRow>
+
+
+
+</TableLayout>
