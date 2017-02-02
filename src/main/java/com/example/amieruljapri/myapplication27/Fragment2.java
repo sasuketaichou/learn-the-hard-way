@@ -1,8 +1,11 @@
 package com.example.amieruljapri.myapplication27;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +21,25 @@ public class Fragment2 extends Fragment {
 
     List<PojoListTicketsValues> list;
     int newSt, assignSt, plannedSt, pendingSt, solvedSt, closedSt;
-    ApiClient apiClient;
+    View rootView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new AsyncGetList().execute();
+    }
 
-        apiClient = new ApiClient();
-        list =apiClient.getTicketStatus();
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        rootView =inflater.inflate(R.layout.fragment_home,container,false);
+        return rootView;
+
+
+    }
+
+    private void initView() {
 
         for(PojoListTicketsValues status : list){
 
@@ -50,17 +64,7 @@ public class Fragment2 extends Fragment {
                     closedSt++;
                     break;
             }
-
         }
-
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View rootView =inflater.inflate(R.layout.fragment_home,container,false);
-
         TextView newSt = (TextView)rootView.findViewById(R.id.newSt);
         newSt.setText(String.valueOf(this.newSt));
         TextView assignSt = (TextView)rootView.findViewById(R.id.assignSt);
@@ -73,7 +77,30 @@ public class Fragment2 extends Fragment {
         solvedSt.setText(String.valueOf(this.solvedSt));
         TextView closedSt = (TextView)rootView.findViewById(R.id.closedSt);
         closedSt.setText(String.valueOf(this.closedSt));
+    }
 
-        return rootView;
+    class AsyncGetList extends AsyncTask<Void,Void,Void>{
+        ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressDialog(getActivity());
+            dialog.setMessage("Loading...");
+            dialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            list = ApiClient.getInstance(getContext()).getTicketStatus();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            initView();
+            dialog.dismiss();
+        }
     }
 }
