@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/border"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:text="@string/id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/idStatus"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:layout_below="@+id/idStatus"
+        android:text="@string/title_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@+id/idStatus"
+        android:id="@+id/titleStatus"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:layout_below="@+id/titleStatus"
+        android:text="@string/type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@+id/titleStatus"
+        android:id="@+id/typeStatus"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:layout_below="@+id/typeStatus"
+        android:text="@string/opening_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@+id/typeStatus"
+        android:id="@+id/openStatus"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:layout_below="@+id/openStatus"
+        android:text="@string/category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@+id/openStatus"
+        android:id="@+id/categoryStatus"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:layout_below="@+id/categoryStatus"
+        android:text="@string/engineer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@+id/categoryStatus"
+        android:id="@+id/engStatus"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:layout_below="@+id/engStatus"
+        android:text="@string/closing_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_below="@+id/engStatus"
+        android:id="@+id/closeStatus"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

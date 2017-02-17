@@ -7,10 +7,17 @@
     tools:context="com.example.amieruljapri.myapplication27.MainActivity">
 
     <FrameLayout
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_below="@layout/toolbar_main"
         android:id="@+id/contentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomBar" />
+
+    <include
+        layout="@layout/toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
@@ -18,7 +25,5 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         app:bb_tabXmlResource="@xml/bottombar_tabs" />
-
-
 
 </RelativeLayout>
