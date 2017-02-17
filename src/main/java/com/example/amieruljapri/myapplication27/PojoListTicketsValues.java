@@ -12,7 +12,7 @@ import java.util.List;
     public String entitiesId;
     public String name;
     public String date;
-    public Object closedate;
+    public String closedate;
     public Object solvedate;
     public String dateMod;
     public String usersIdLastupdater;

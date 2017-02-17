@@ -1,14 +1,23 @@
 package com.example.amieruljapri.myapplication27;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,7 +29,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by amierul.japri on 12/19/2016.
  */
 
-public class ApiClient {
+public final class ApiClient {
+
+    private static volatile ApiClient instance;
 
     public static final String TICKET_TYPE = "tickettype";
     public static final String TICKET_CATEGORY = "itilcategory";
@@ -32,6 +43,8 @@ public class ApiClient {
 
     private String METHOD = "method";
     private String SESSION = "session";
+
+    private String METHOD_CREATETICKET = "glpi.createTicket";
 
     private String METHOD_DROPDOWNVALUES = "glpi.listDropdownValues";
     private String DROPDOWNVALUES_DROPDOWN = "dropdown";
@@ -57,21 +70,41 @@ public class ApiClient {
     private ArrayList<String> mType = null;
     private int count;
     private boolean authentication;
+    public Context context;
 
-    public ApiClient(Context context){
-        //get context for database
-        database = new GlpiDatabase(context);
+    public static ApiClient getInstance(Context context){
+        if(instance == null){
+            synchronized (ApiClient.class){
+                if(instance == null){
+                    instance = new ApiClient(context);
+                }
+            }
+        }
+        return instance;
     }
 
-    public ApiClient(){}
+    public ApiClient(Context context){
+        this.context = context;
+
+        //get context for database
+        if(database == null) {
+            database = new GlpiDatabase(context);
+        }
+    }
+
+
 
     //to be used only inside this class
     //tutorial used to be public
     private Retrofit getClient(){
         if(retrofit == null){
+
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
         return retrofit;
@@ -143,7 +176,10 @@ public class ApiClient {
         //instantiate apiService
         //if login is not called, other method in this class
         //cannot be used
-        apiService = getClient().create(ApiInterface.class);
+        if(apiService == null){
+            apiService = getClient().create(ApiInterface.class);
+        }
+
 
         Call<GlpiLogin> loginCall =apiService.login(data);
         Log.d(TAG,"apiservice not null. great");
@@ -158,7 +194,6 @@ public class ApiClient {
                  only after that u get the session key required
                  to use other rest GLPI method
                  */
-
                 session = response.body().session;
                 authentication = session!=null;
                 Log.d(TAG,"lOGINsuccess :" + session);
@@ -181,12 +216,13 @@ public class ApiClient {
 
                     resetCount();
                 }
+
             }
 
             @Override
             public void onFailure(Call<GlpiLogin> call, Throwable t) {
 
-                Log.e(TAG,"LOGINfailed"+t);
+                Log.e(TAG,"Login v1 : "+t+"\n"+call.request()+"\n"+call.request().url());
             }
         });
     }
@@ -258,41 +294,92 @@ public class ApiClient {
         });
     }
 
-    public List<PojoListTicketsValues> getTicketStatus(){
+    public List<Object> getTicketStatus(){
 
-        final List<PojoListTicketsValues> list = new ArrayList<>();
+        List<Object> list = new ArrayList<>();
 
         Map<String,String> data = new HashMap<>();
         data.put(METHOD,METHOD_LISTTICKETS);
         data.put(SESSION,session);
         Log.v("retrofit","List ticketvalues Session : "+session);
         //mine : mirror the user requesting for ticket
-        data.put("mine",null);
+        data.put("mine","");
         //id2name : option to enable id to name translation of dropdown fields
-        data.put("id2name",null);
+        data.put("id2name","");
+        //limit is to be decide
+        data.put("limit","100");
 
         Call<List<PojoListTicketsValues>> call = apiService.getListticketValues(data);
-        call.enqueue(new Callback<List<PojoListTicketsValues>>() {
-            @Override
-            public void onResponse(Call<List<PojoListTicketsValues>> call, Response<List<PojoListTicketsValues>> response) {
+        Response<List<PojoListTicketsValues>> response = null;
+        try {
+            response = call.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-                for (PojoListTicketsValues mResponse : response.body()){
-                    list.add(mResponse);
-                    Log.v("retrofit","List ticketvalues Status : "+mResponse.status);
-                }
+        if (response != null) {
+            for (PojoListTicketsValues mResponse : response.body()){
+                list.add(mResponse);
+                Log.v("retrofit","List ticketvalues Status : "+mResponse.status);
             }
-
-            @Override
-            public void onFailure(Call<List<PojoListTicketsValues>> call, Throwable t) {
-
-            }
-        });
-
+        }
         return list;
+    }
+
+    public Integer getCountTicketStatus(int status){
+
+        Map<String,String> data = new HashMap<>();
+        data.put(METHOD,METHOD_LISTTICKETS);
+        data.put(SESSION,session);
+        data.put("mine","");
+        data.put("id2name","");
+        data.put("count","");
+        data.put("limit","100");
+        data.put("status",String.valueOf(status));
+
+        Call<PojoCountTicketStatus> call = apiService.getcountTicketStatus(data);
+
+        try {
+            Log.v(TAG,call.request().toString());
+            return Integer.valueOf(call.execute().body().count);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public boolean authenticate() {
         //Log.v("retrofit",session);
         return authentication;
+    }
+
+    public void createTicket(PojoCreateTicketValues ticket){
+
+        Map<String,String> data = new HashMap<>();
+        data.put(METHOD,METHOD_CREATETICKET);
+        data.put(SESSION,session);
+        data.put("title",ticket.title);
+        data.put("content",ticket.content1);
+        data.put("type",ticket.type);
+        data.put("urgency",ticket.urgency);
+        data.put("category",ticket.category);
+        data.put("user_email",ticket.user_email);
+        data.put("user_email_notification",ticket.user_email_notification);
+        data.put("item",ticket.item);
+        data.put("itemtype",ticket.itemtype);
+
+        Call<PojoCreateTicketValues> call = apiService.createTicketValues(data);
+        call.enqueue(new Callback<PojoCreateTicketValues>() {
+            @Override
+            public void onResponse(Call<PojoCreateTicketValues> call, Response<PojoCreateTicketValues> response) {
+                Log.v(TAG,"Success : "+response.raw().toString());
+            }
+
+            @Override
+            public void onFailure(Call<PojoCreateTicketValues> call, Throwable t) {
+                Log.v(TAG,"Failed : "+t.toString()+" :::: "+call.request());
+            }
+        });
+
     }
 }

@@ -9,31 +9,20 @@ import android.widget.TextView;
  * Created by amierul.japri on 1/5/2017.
  */
 public class ViewHolder3 extends RecyclerView.ViewHolder {
-    TextView title,description;
-    EditText titleEdit, descriptionEdit;
+    TextView title, titleEdit;
 
     public ViewHolder3(View itemView) {
         super(itemView);
         title = (TextView)itemView.findViewById(R.id.titleView3);
-        description = (TextView)itemView.findViewById(R.id.description);
-        titleEdit = (EditText)itemView.findViewById(R.id.editTextTitleview3);
-        descriptionEdit = (EditText)itemView.findViewById(R.id.editTextDescription);
-
+        titleEdit = (TextView) itemView.findViewById(R.id.editTextTitleview3);
     }
 
     public TextView getTitle() {
         return title;
     }
 
-    public TextView getDescription() {
-        return description;
-    }
-
-    public EditText getTitleEdit() {
+    public TextView getTitleEdit() {
         return titleEdit;
     }
 
-    public EditText getDescriptionEdit() {
-        return descriptionEdit;
-    }
 }

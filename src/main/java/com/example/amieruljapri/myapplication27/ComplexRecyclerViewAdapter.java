@@ -24,9 +24,11 @@ import java.util.TreeMap;
 public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Object> items;
+    public PojoCreateTicketValues ticket;
 
     public ComplexRecyclerViewAdapter(List<Object> items) {
         this.items = items;
+        ticket = PojoCreateTicketValues.getInstance();
         //get data from oncreate fragment1
     }
 
@@ -80,21 +82,48 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 configureViewHolder2(vh2,position);
                 break;
             case 2:
-                //ViewHolder3 vh3 = (ViewHolder3) holder;
+                ViewHolder3 vh3 = (ViewHolder3) holder;
+                configureViewHolder3(vh3,position);
                 break;
             default:
                 break;
         }
     }
 
+    private void configureViewHolder3(ViewHolder3 vh3, int position) {
+        String title = null;
+        String hint = null;
+        switch (position){
+            case 5:
+                title = "TITLE";
+                hint = "Title";
+                break;
+            case 6:
+                title = "DESCRIPTION";
+                hint = "Description";
+                break;
+
+        }
+
+        vh3.getTitle().setText(title);
+        vh3.getTitleEdit().setText(hint);
+    }
+
     private void configureViewHolder2(ViewHolder2 vh2, int position) {
         //new view define here
         //for email, title
         String email = (String)items.get(position);
-        if(email.isEmpty()){
+
+        if(email == null){
+            email = "null";
+        }
+        else if(email.isEmpty()){
             email = "-";
         }
+        //default value
         vh2.getEmail().setText(email);
+        ticket.user_email = email;
+        ticket.user_email_notification = "1";
     }
 
     private void configureViewHolder1(ViewHolder1 vh1, int position) {
@@ -103,24 +132,6 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         Log.v("retrofit","configureViewHolder1 : "+map.toString());
 
         if(!map.isEmpty()){
-            //title
-            String mTitle = null;
-            switch (position){
-                case 0:
-                    mTitle = "TYPE";
-                    break;
-                case 1:
-                    mTitle = "URGENCY";
-                    break;
-                case 2:
-                    mTitle = "CATEGORY";
-                    break;
-                case 4:
-                    mTitle = "HARDWARE";
-                    break;
-            }
-            //set title
-            vh1.getTitle().setText(mTitle);
 
             //get all the value available
             List<String> list = new ArrayList<>();
@@ -129,8 +140,32 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 //get all key
                 list.add(entry.getKey());
             }
+            String defaultValue = map.get(list.get(0));
             //set default value
-            vh1.getItem().setText(map.get(list.get(0)));
+            vh1.getItem().setText(defaultValue);
+
+            //title
+            String mTitle = null;
+            switch (position){
+                case 0:
+                    mTitle = "TYPE";
+                    ticket.type = defaultValue;
+                    break;
+                case 1:
+                    mTitle = "CATEGORY";
+                    ticket.category = defaultValue;
+                    break;
+                case 2:
+                    mTitle = "URGENCY";
+                    ticket.urgency = defaultValue;
+                    break;
+                case 4:
+                    mTitle = "HARDWARE";
+                    ticket.itemtype = defaultValue;
+                    break;
+            }
+            //set title
+            vh1.getTitle().setText(mTitle);
         }
     }
 
@@ -161,6 +196,7 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 viewType = 1;
                 break;
             case 5:
+            case 6:
                 viewType = 2;
                 break;
 

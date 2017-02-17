@@ -19,7 +19,6 @@ import java.util.List;
  */
 public class Fragment2 extends Fragment {
 
-    List<PojoListTicketsValues> list;
     int newSt, assignSt, plannedSt, pendingSt, solvedSt, closedSt;
     View rootView;
 
@@ -41,30 +40,6 @@ public class Fragment2 extends Fragment {
 
     private void initView() {
 
-        for(PojoListTicketsValues status : list){
-
-            switch (status.status){
-
-                case "1":
-                    newSt++;
-                    break;
-                case "2":
-                    assignSt++;
-                    break;
-                case "3":
-                    plannedSt++;
-                    break;
-                case "4":
-                    pendingSt++;
-                    break;
-                case "5":
-                    solvedSt++;
-                    break;
-                case "6":
-                    closedSt++;
-                    break;
-            }
-        }
         TextView newSt = (TextView)rootView.findViewById(R.id.newSt);
         newSt.setText(String.valueOf(this.newSt));
         TextView assignSt = (TextView)rootView.findViewById(R.id.assignSt);
@@ -92,7 +67,14 @@ public class Fragment2 extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            list = ApiClient.getInstance(getContext()).getTicketStatus();
+            ApiClient apiClient = ApiClient.getInstance(getContext());
+
+            newSt = apiClient.getCountTicketStatus(1);
+            assignSt = apiClient.getCountTicketStatus(2);
+            plannedSt = apiClient.getCountTicketStatus(3);
+            pendingSt = apiClient.getCountTicketStatus(4);
+            solvedSt = apiClient.getCountTicketStatus(5);
+            closedSt = apiClient.getCountTicketStatus(6);
             return null;
         }
 

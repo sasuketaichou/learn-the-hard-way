@@ -69,7 +69,7 @@ public class GlpiDatabase extends SQLiteOpenHelper {
             map.put(id,item);
             cursor.moveToNext();
         }
-        Log.d(TAG,"cursor Hashmap: "+map.toString());
+        Log.d(TAG,"cursor map: "+map.toString());
 
         cursor.close();
         return map;

@@ -3,13 +3,19 @@ package com.example.amieruljapri.myapplication27;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.roughike.bottombar.BottomBar;
@@ -18,13 +24,14 @@ import com.roughike.bottombar.OnTabSelectListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
 
     public static final String AUTHORITY = "com.example.amieruljapri.myapplication27";
     //same as authenticator.xml
     public static final String ACCOUNT_TYPE = "com.example.amieruljapri";
     public static final String ACCOUNT = "dummyaccount";
     Account mAccount;
+    TextView mTitle;
 
     private Fragment1 fragment1;
     private Fragment2 fragment2;
@@ -32,9 +39,26 @@ public class MainActivity extends FragmentActivity {
     private Fragment4 fragment4;
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        // Get access to the custom title view
+        mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        // Display icon in the toolbar
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
+
 
         //create Dummy account
         mAccount = CreateSyncAccount(this);
@@ -118,7 +142,12 @@ public class MainActivity extends FragmentActivity {
         });
     }
 
-    private void displayFragment(Fragment fragmentShow, Fragment fragmentHide,Fragment fragmentHide2,Fragment fragmentHide3) {
+    private void displayFragment(Fragment fragmentShow,
+                                 Fragment fragmentHide,
+                                 Fragment fragmentHide2,
+                                 Fragment fragmentHide3) {
+
+        mTitle.setText(fragmentShow.getClass().getSimpleName());
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
