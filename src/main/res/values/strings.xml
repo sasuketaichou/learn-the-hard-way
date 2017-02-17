@@ -4,6 +4,7 @@
     <string name="edit">Edit</string>
     <string name="email_followup">Email followup -   </string>
     <string name="title">TITLE</string>
+    <string name="title_small">Title</string>
     <string name="description">DESCRIPTION</string>
     <string name="tickets">Tickets</string>
     <string name="number">Number</string>
@@ -13,4 +14,13 @@
     <string name="pending">Pending</string>
     <string name="solved">Solved</string>
     <string name="closed">Closed</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_send">send</string>
+    <string name="closing_date">Closing date</string>
+    <string name="engineer">Engineer</string>
+    <string name="category">Category</string>
+    <string name="opening_date">Opening date</string>
+    <string name="type">Type</string>
+    <string name="id">ID</string>
+    <string name="photo">Photo</string>
 </resources>
